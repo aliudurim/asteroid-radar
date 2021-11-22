@@ -1,7 +1,8 @@
-package com.udacity.asteroidradar
+package com.udacity.asteroidradar.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.udacity.asteroidradar.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
