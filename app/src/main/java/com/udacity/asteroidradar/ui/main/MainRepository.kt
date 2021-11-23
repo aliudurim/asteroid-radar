@@ -7,9 +7,9 @@ import com.udacity.asteroidradar.network.Resource
 import com.udacity.asteroidradar.network.ResponseHandler
 
 class MainRepository(private val responseHandler: ResponseHandler) {
-    suspend fun nearEarth(): Resource<List<Asteroid>> {
+    suspend fun nearEarth(startDate: String, endDate: String): Resource<List<Asteroid>> {
         return try {
-            val response = Network.service.nearEarth()
+            val response = Network.service.nearEarth(startDate, endDate)
             return responseHandler.handleSuccess(response.nearEarthObjects.map {
                 Asteroid(
                     it.id, it.codename,
