@@ -1,15 +1,25 @@
 package com.udacity.asteroidradar.ui.main
 
-import com.udacity.asteroidradar.models.NearEarth
+import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.Resource
 import com.udacity.asteroidradar.network.ResponseHandler
 
 class MainRepository(private val responseHandler: ResponseHandler) {
-    suspend fun nearEarth(): Resource<NearEarth> {
+    suspend fun nearEarth(): Resource<List<Asteroid>> {
         return try {
-            return responseHandler.handleSuccess(Network.service.nearEarth())
+            val response = Network.service.nearEarth()
+            return responseHandler.handleSuccess(response.nearEarthObjects.map {
+                Asteroid(
+                    it.id, it.codename,
+                    "", it.absoluteMagnitude,
+                    it.estimatedDiameter.kilometers.estimatedDiameter,
+                    it.closeApproachDate[0].relativeVelocity.kilometersPerSecond,
+                    it.closeApproachDate[0].missDistance.astronomical,
+                    it.isPotentiallyHazardous
+                )
+            })
         } catch (e: Exception) {
             responseHandler.handleException(e)
         }
