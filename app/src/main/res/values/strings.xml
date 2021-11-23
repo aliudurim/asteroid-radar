@@ -10,4 +10,14 @@
     <!-- MainScreen -->
     <string name="image_of_the_day">Image of the Day</string>
     <string name="photo_of_the_day">Photo Of The Day</string>
+    <!-- DetailScreen -->
+    <string name="help_button">help button</string>
+    <string name="close_approach_data_title">Close approach date</string>
+    <string name="absolute_magnitude_title">Absolute magnitude</string>
+    <string name="estimated_diameter_title">Estimated diameter</string>
+    <string name="relative_velocity_title">Relative velocity</string>
+    <string name="distance_from_earth_title">Distance from earth</string>
+    <string name="astronomical_unit_format">%f au</string>
+    <string name="km_unit_format">%f km</string>
+    <string name="km_s_unit_format">%f km/s</string>
 </resources>
