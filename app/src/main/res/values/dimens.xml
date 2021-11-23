@@ -11,6 +11,7 @@
     <!-- sizes -->
     <dimen name="size_0">0dp</dimen>
     <dimen name="size_60">60dp</dimen>
+    <dimen name="size_220">220dp</dimen>
     <!-- text_sizes -->
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
