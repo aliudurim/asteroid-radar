@@ -3,4 +3,8 @@
     <!-- Navigation labels -->
     <string name="title_main">Main</string>
     <string name="title_detail">Detail</string>
+    <!-- MainMenu labels -->
+    <string name="next_week_asteroids">View week asteroids</string>
+    <string name="today_asteroids">View today asteroids</string>
+    <string name="saved_asteroids">View saved asteroids</string>
 </resources>
