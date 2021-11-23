@@ -19,6 +19,9 @@ class MainViewModel(
             val response = withContext(Dispatchers.IO) {
                 mainRepository.nearEarth()
             }
+            val photoOfTheDay = withContext(Dispatchers.IO) {
+                mainRepository.photoOfTheDay()
+            }
         }
     }
 
