@@ -2,20 +2,22 @@ package com.udacity.asteroidradar.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
+import com.udacity.asteroidradar.models.Asteroid
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainViewModel(
     application: Application,
     private val mainRepository: MainRepository
 ) : AndroidViewModel(application) {
 
-    val asteroids = mainRepository.asteroidList
+    private val weekAsteroidList = mainRepository.asteroidList
+    private val todayAsteroidList = mainRepository.todayAsteroidList
 
     val pictureOfTheDay = mainRepository.pictureOfDay
 
     val showLoader = MutableLiveData<Boolean>().apply { value = false }
+
+    val asteroidList: MediatorLiveData<List<Asteroid>> = MediatorLiveData()
 
     init {
         getAsteroidsAndPictureOfTheDay()
@@ -24,12 +26,40 @@ class MainViewModel(
     fun getAsteroidsAndPictureOfTheDay() {
         viewModelScope.launch {
             showLoader.value = true
-            withContext(Dispatchers.IO) {
-                mainRepository.nearEarth("2015-09-07", "2015-09-08")
-                mainRepository.photoOfTheDay()
-            }
+            mainRepository.nearEarth("2015-09-07", "2015-09-08")
+            mainRepository.photoOfTheDay()
             showLoader.value = false
+            asteroidList.addSource(weekAsteroidList) {
+                asteroidList.value = it
+            }
         }
+    }
+
+    fun onTodayAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(todayAsteroidList) {
+            asteroidList.value = it
+        }
+    }
+
+    fun onViewWeekAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(weekAsteroidList) {
+            asteroidList.value = it
+        }
+
+    }
+
+    fun onSavedAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(weekAsteroidList) {
+            asteroidList.value = it
+        }
+    }
+
+    private fun removeSource() {
+        asteroidList.removeSource(todayAsteroidList)
+        asteroidList.removeSource(weekAsteroidList)
     }
 
     class Factory(

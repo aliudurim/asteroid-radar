@@ -52,7 +52,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         setHasOptionsMenu(true)
         binding.rcvAsteroid.adapter = adapter
 
-        viewModel.asteroids.observe(viewLifecycleOwner) { data ->
+        viewModel.asteroidList.observe(viewLifecycleOwner) { data ->
             adapter.submitList(data)
         }
         viewModel.pictureOfTheDay.observe(viewLifecycleOwner) { data ->
@@ -73,6 +73,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.week_asteroid -> viewModel.onViewWeekAsteroidsClicked()
+            R.id.today_asteroid -> viewModel.onTodayAsteroidsClicked()
+            R.id.save_asteroid -> viewModel.onSavedAsteroidsClicked()
+        }
         return true
     }
 }
