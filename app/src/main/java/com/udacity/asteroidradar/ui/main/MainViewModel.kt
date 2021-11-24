@@ -2,8 +2,6 @@ package com.udacity.asteroidradar.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.models.PictureOfDay
-import com.udacity.asteroidradar.network.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -15,9 +13,7 @@ class MainViewModel(
 
     val asteroids = mainRepository.asteroidList
 
-    private var _pictureOfTheDay = MutableLiveData<Resource<PictureOfDay>>()
-    val pictureOfTheDay: LiveData<Resource<PictureOfDay>>
-        get() = _pictureOfTheDay
+    val pictureOfTheDay = mainRepository.pictureOfDay
 
     val showLoader = MutableLiveData<Boolean>().apply { value = false }
 

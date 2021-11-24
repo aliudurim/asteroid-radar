@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.udacity.asteroidradar.models.Asteroid
+import com.udacity.asteroidradar.models.PictureOfDay
 
 private const val DATABASE = "asteroid_radar_db"
 
 @Database(
     entities = [
-        Asteroid::class
+        Asteroid::class,
+        PictureOfDay::class
     ],
     version = 1,
     exportSchema = false
@@ -18,6 +20,7 @@ private const val DATABASE = "asteroid_radar_db"
 abstract class AsteroidRadarDatabase : RoomDatabase() {
 
     abstract fun asteroidDao(): AsteroidDao
+    abstract fun pictureDayDao(): PictureDayDao
 
     companion object {
         // For Singleton instantiation

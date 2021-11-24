@@ -20,6 +20,9 @@ class MainRepository(
     val todayAsteroidList: LiveData<List<Asteroid>>
         get() = database.asteroidDao().getTodayAsteroid(getCurrentDate())
 
+    val pictureOfDay: LiveData<PictureOfDay>
+        get() = database.pictureDayDao().get()
+
     suspend fun nearEarth(startDate: String, endDate: String): Resource<List<Asteroid>> {
         return try {
             val response = Network.service.nearEarth(startDate, endDate)
@@ -47,7 +50,9 @@ class MainRepository(
 
     suspend fun photoOfTheDay(): Resource<PictureOfDay> {
         return try {
-            return responseHandler.handleSuccess(Network.service.photoOfTheDay())
+            val photoOfTheDay = Network.service.photoOfTheDay()
+            database.pictureDayDao().updateData(photoOfTheDay)
+            return responseHandler.handleSuccess(photoOfTheDay)
         } catch (e: Exception) {
             responseHandler.handleException(e)
         }

@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.network.ResponseHandler
-import com.udacity.asteroidradar.network.Status.*
 import com.udacity.asteroidradar.persistence.AsteroidRadarDatabase
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -62,17 +61,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.asteroids.observe(viewLifecycleOwner) { data ->
             adapter.submitList(data)
         }
-
         viewModel.pictureOfTheDay.observe(viewLifecycleOwner) { data ->
-            when (data?.status) {
-                SUCCESS -> {
-                    Glide.with(this).load(data.data?.url).into(binding.imgOfTheDay)
-                }
-                ERROR -> {
-                }
-                LOADING -> {
-                }
-            }
+            if (data != null)
+                Glide.with(this).load(data.url).into(binding.imgOfTheDay)
         }
         viewModel.showLoader.observe(viewLifecycleOwner) {
             binding.srlAsteroid.isRefreshing = it
