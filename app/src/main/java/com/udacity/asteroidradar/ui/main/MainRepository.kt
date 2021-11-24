@@ -1,12 +1,25 @@
 package com.udacity.asteroidradar.ui.main
 
+import androidx.lifecycle.LiveData
 import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.Resource
 import com.udacity.asteroidradar.network.ResponseHandler
+import com.udacity.asteroidradar.persistence.AsteroidRadarDatabase
+import com.udacity.asteroidradar.ui.utils.getCurrentDate
 
-class MainRepository(private val responseHandler: ResponseHandler) {
+class MainRepository(
+    private val responseHandler: ResponseHandler,
+    private val database: AsteroidRadarDatabase
+) {
+
+    val asteroidList: LiveData<List<Asteroid>>
+        get() = database.asteroidDao().getAll()
+
+    val todayAsteroidList: LiveData<List<Asteroid>>
+        get() = database.asteroidDao().getTodayAsteroid(getCurrentDate())
+
     suspend fun nearEarth(startDate: String, endDate: String): Resource<List<Asteroid>> {
         return try {
             val response = Network.service.nearEarth(startDate, endDate)
@@ -25,6 +38,7 @@ class MainRepository(private val responseHandler: ResponseHandler) {
                     )
                 }
             }
+            database.asteroidDao().updateData(list)
             return responseHandler.handleSuccess(list)
         } catch (e: Exception) {
             responseHandler.handleException(e)

@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.udacity.asteroidradar.models.Asteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.Resource
 import kotlinx.coroutines.Dispatchers
@@ -14,29 +13,26 @@ class MainViewModel(
     private val mainRepository: MainRepository
 ) : AndroidViewModel(application) {
 
-    private var _asteroids = MutableLiveData<Resource<List<Asteroid>>>()
-    val asteroids: LiveData<Resource<List<Asteroid>>>
-        get() = _asteroids
+    val asteroids = mainRepository.asteroidList
 
     private var _pictureOfTheDay = MutableLiveData<Resource<PictureOfDay>>()
     val pictureOfTheDay: LiveData<Resource<PictureOfDay>>
         get() = _pictureOfTheDay
 
+    val showLoader = MutableLiveData<Boolean>().apply { value = false }
+
     init {
-        getAsteroids()
+        getAsteroidsAndPictureOfTheDay()
     }
 
-    fun getAsteroids() {
+    fun getAsteroidsAndPictureOfTheDay() {
         viewModelScope.launch {
-            _asteroids.value = Resource.loading(null)
-            val response = withContext(Dispatchers.IO) {
+            showLoader.value = true
+            withContext(Dispatchers.IO) {
                 mainRepository.nearEarth("2015-09-07", "2015-09-08")
-            }
-            val photoOfTheDay = withContext(Dispatchers.IO) {
                 mainRepository.photoOfTheDay()
             }
-            _asteroids.value = response
-            _pictureOfTheDay.value = photoOfTheDay
+            showLoader.value = false
         }
     }
 

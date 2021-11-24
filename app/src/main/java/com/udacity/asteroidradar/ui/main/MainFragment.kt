@@ -10,6 +10,7 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.network.ResponseHandler
 import com.udacity.asteroidradar.network.Status.*
+import com.udacity.asteroidradar.persistence.AsteroidRadarDatabase
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -31,7 +32,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private val mainRepository by lazy {
-        MainRepository(responseHandler)
+        MainRepository(
+            responseHandler,
+            AsteroidRadarDatabase.getInstance(requireContext())
+        )
     }
 
     private val viewModel: MainViewModel by viewModels {
@@ -54,17 +58,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         binding.rcvAsteroid.adapter = adapter
+
         viewModel.asteroids.observe(viewLifecycleOwner) { data ->
-            when (data?.status) {
-                SUCCESS -> {
-                    binding.srlAsteroid.isRefreshing = false
-                    adapter.submitList(data.data)
-                }
-                ERROR -> {
-                    binding.srlAsteroid.isRefreshing = false
-                }
-                LOADING -> binding.srlAsteroid.isRefreshing = true
-            }
+            adapter.submitList(data)
         }
 
         viewModel.pictureOfTheDay.observe(viewLifecycleOwner) { data ->
@@ -78,9 +74,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
             }
         }
-
+        viewModel.showLoader.observe(viewLifecycleOwner) {
+            binding.srlAsteroid.isRefreshing = it
+        }
         binding.srlAsteroid.setOnRefreshListener {
-            viewModel.getAsteroids()
+            viewModel.getAsteroidsAndPictureOfTheDay()
         }
     }
 

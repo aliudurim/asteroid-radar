@@ -92,5 +92,5 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
 
     // Work
-    implementation "android.arch.work:work-runtime-ktx:$work_version"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 }
