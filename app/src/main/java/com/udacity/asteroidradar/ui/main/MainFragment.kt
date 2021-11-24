@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-import com.udacity.asteroidradar.network.ResponseHandler
 import com.udacity.asteroidradar.persistence.AsteroidRadarDatabase
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -26,13 +25,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         })
     }
 
-    private val responseHandler by lazy {
-        ResponseHandler()
-    }
-
     private val mainRepository by lazy {
         MainRepository(
-            responseHandler,
             AsteroidRadarDatabase.getInstance(requireContext())
         )
     }
