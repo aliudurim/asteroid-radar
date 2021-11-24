@@ -25,7 +25,7 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO) {
-                mainRepository.nearEarth("", "")
+                mainRepository.nearEarth("2015-09-07", "2015-09-08")
             }
             val photoOfTheDay = withContext(Dispatchers.IO) {
                 mainRepository.photoOfTheDay()

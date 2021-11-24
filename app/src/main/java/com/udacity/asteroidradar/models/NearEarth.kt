@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class NearEarth(
     @SerializedName("near_earth_objects")
-    val nearEarthObjects: List<NearEarthObject>
+    val nearEarthObjects: Map<String, List<NearEarthObject>>
 ) : Parcelable
 
 @Parcelize
@@ -19,6 +19,7 @@ data class NearEarthObject(
     val absoluteMagnitude: Double,
     @SerializedName("estimated_diameter")
     val estimatedDiameter: EstimatedDiameter,
+    @SerializedName("close_approach_data")
     val closeApproachDate: List<CloseApproachDate>,
     @SerializedName("is_potentially_hazardous_asteroid")
     val isPotentiallyHazardous: Boolean
