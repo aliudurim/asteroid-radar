@@ -23,13 +23,19 @@ class MainViewModel(
         get() = _pictureOfTheDay
 
     init {
+        getAsteroids()
+    }
+
+    fun getAsteroids() {
         viewModelScope.launch {
+            _asteroids.value = Resource.loading(null)
             val response = withContext(Dispatchers.IO) {
                 mainRepository.nearEarth("2015-09-07", "2015-09-08")
             }
             val photoOfTheDay = withContext(Dispatchers.IO) {
                 mainRepository.photoOfTheDay()
             }
+            _asteroids.value = response
         }
     }
 

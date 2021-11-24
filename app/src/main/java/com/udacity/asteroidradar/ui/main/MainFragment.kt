@@ -4,14 +4,22 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.network.ResponseHandler
+import com.udacity.asteroidradar.network.Status.*
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
+
+    private val adapter by lazy {
+        MainAdapter(MainItemListener { item ->
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment())
+        })
+    }
 
     private val responseHandler by lazy {
         ResponseHandler()
@@ -40,6 +48,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        binding.rcvAsteroid.adapter = adapter
+        viewModel.asteroids.observe(viewLifecycleOwner) { data ->
+            when (data?.status) {
+                SUCCESS -> {
+                    binding.srlAsteroid.isRefreshing = false
+                    adapter.submitList(data.data)
+                }
+                ERROR -> {
+                    binding.srlAsteroid.isRefreshing = false
+                }
+                LOADING -> binding.srlAsteroid.isRefreshing = true
+            }
+        }
+
+        binding.srlAsteroid.setOnRefreshListener {
+            viewModel.getAsteroids()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
