@@ -36,6 +36,7 @@ class MainViewModel(
                 mainRepository.photoOfTheDay()
             }
             _asteroids.value = response
+            _pictureOfTheDay.value = photoOfTheDay
         }
     }
 

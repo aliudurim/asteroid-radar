@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.network.ResponseHandler
@@ -63,6 +64,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     binding.srlAsteroid.isRefreshing = false
                 }
                 LOADING -> binding.srlAsteroid.isRefreshing = true
+            }
+        }
+
+        viewModel.pictureOfTheDay.observe(viewLifecycleOwner) { data ->
+            when (data?.status) {
+                SUCCESS -> {
+                    Glide.with(this).load(data.data?.url).into(binding.imgOfTheDay)
+                }
+                ERROR -> {
+                }
+                LOADING -> {
+                }
             }
         }
 
