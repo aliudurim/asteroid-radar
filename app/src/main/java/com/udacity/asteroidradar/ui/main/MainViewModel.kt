@@ -3,6 +3,8 @@ package com.udacity.asteroidradar.ui.main
 import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.models.Asteroid
+import com.udacity.asteroidradar.ui.utils.getCurrentDate
+import com.udacity.asteroidradar.ui.utils.getDateAfterToday
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -26,7 +28,7 @@ class MainViewModel(
     fun getAsteroidsAndPictureOfTheDay() {
         viewModelScope.launch {
             showLoader.value = true
-            mainRepository.nearEarth("2015-09-07", "2015-09-08")
+            mainRepository.nearEarth(getCurrentDate(), getDateAfterToday())
             mainRepository.photoOfTheDay()
             showLoader.value = false
             asteroidList.addSource(weekAsteroidList) {
