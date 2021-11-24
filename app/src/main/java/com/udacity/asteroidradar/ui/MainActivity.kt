@@ -26,8 +26,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolBar)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.mainFragment,
-                R.id.detailFragment
+                R.id.mainFragment
             )
         )
         binding.toolBar.setupWithNavController(navController, appBarConfiguration)

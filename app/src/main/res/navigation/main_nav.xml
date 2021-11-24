@@ -18,5 +18,9 @@
         android:id="@+id/detailFragment"
         android:name="com.udacity.asteroidradar.ui.detail.DetailFragment"
         android:label="@string/title_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="asteroid"
+            app:argType="com.udacity.asteroidradar.models.Asteroid" />
+    </fragment>
 </navigation>

@@ -17,7 +17,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private val adapter by lazy {
         MainAdapter(MainItemListener { item ->
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment())
+            findNavController().navigate(
+                MainFragmentDirections.actionMainFragmentToDetailFragment(
+                    item
+                )
+            )
         })
     }
 
